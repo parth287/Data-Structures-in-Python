@@ -193,6 +193,109 @@ class LinkedList:
         self.head = new_head
         llist.head = None
         return new_head
+    
+    def del_dup(self):
+        cur_node = self.head
+        prev = None
+        dup = {}
+        while cur_node:
+            if cur_node.data in dup:
+                prev.next = cur_node.next
+                cur_node = None
+            else:
+                dup[cur_node.data] = 1
+                prev = cur_node
+            cur_node = prev.next
+    
+    def n_from_last_node(self, n):
+        # Method 1
+        cur_node = self.head
+        total_length = self.length_iterative()
+        while cur_node:
+            if total_length == n:
+                print(cur_node.data)
+                return cur_node
+            total_length -= 1
+            cur_node = cur_node.next
+        if not cur_node:
+            return f"{str(n)} is greater than the length of the string."
+
+        # Method 2:
+        p = self.head
+        q = self.head 
+        count = 0
+        while q and count < n :
+            q = q.next
+            count += 1
+        if not q :
+            return f"{str(n)} is greater than the length of the string."
+        if p and q :
+            p = p.next
+            q = q.next
+        return p.data
+
+    def count_occurences(self, n):
+        cur_node = self.head
+        count = 0
+        while cur_node:
+            if cur_node.data == str(n):
+                cur_node = cur_node.next
+                count += 1
+            else:
+                cur_node = cur_node.next
+        return count
+
+    def rotate(self, n):
+        cur_node = self.head
+        prev = None
+        count = 1
+        while cur_node and count < int(n) :
+            prev = cur_node
+            cur_node = cur_node.next
+            count +=1
+        new_head = cur_node
+        prev.next = None
+        if not prev:
+            return f"{str(n)} is larger than the string size."
+        else:
+            while cur_node:
+                prev = cur_node 
+                cur_node = cur_node.next
+            prev.next = self.head
+            self.head = new_head
+        return new_head
+
+    def is_palindrome(self):
+        cur_node = self.head
+        check =""
+        while cur_node:
+            check = check + str(cur_node.data)
+            cur_node = cur_node.next
+        return check == check[::-1]
+
+    def tail_to_head(self):
+        cur_node = self.head
+        prev = None
+        while cur_node.next:
+            prev = cur_node
+            cur_node = cur_node.next
+        cur_node.next = self.head
+        prev.next =None
+        self.head = cur_node
+        return self.head
+
+    def sum_of_2lists(self, list2):
+        cur_node = self.head 
+        ans1 = 0
+        while cur_node:
+            ans1 = ans1 + int(cur_node.data)
+            cur_node = cur_node.next
+        cur_node2 = list2.head
+        ans2 = 0 
+        while cur_node2:
+            ans2 = ans2 + int(cur_node2.data)
+            cur_node2 = cur_node2.next
+        return ans1+ans2
         
 # Testing the functions out here
 if __name__ == "__main__":   
@@ -201,9 +304,18 @@ if __name__ == "__main__":
 
     llist_1.append("1")
     llist_1.append("3")
-    llist_1.append("5")
-    llist_1.append("6")
+    llist_1.append("3")
+    llist_1.append("3")
+    llist_1.append("3")
     llist_1.append("9")
+    llist_1.append("1")
+    # llist_1.del_dup()
+    # llist_1.n_from_last_node(2)
+    # print(llist_1.count_occurences(9))
+    # llist_1.rotate(4)
+    # print(llist_1.is_palindrome())
+    # llist_1.tail_to_head()
+    print(llist_1.sum_of_2lists(llist_2))
 
     llist_2.append("2")
     llist_2.append("4")
@@ -211,8 +323,9 @@ if __name__ == "__main__":
     llist_2.append("8")
     llist_2.append("10")
 
-    llist_1.merge_sorted(llist_2)
-    llist_1.print_list()
+    # llist_1.merge_sorted(llist_2)
+    # llist_1.print_list()
+
 
     # llist = LinkedList()
     # llist.append("A")
